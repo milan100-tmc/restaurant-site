@@ -18,7 +18,7 @@ export const heroConfig: HeroConfig = {
   subtitle: "07 44 87 89 82 · 09 56 67 62 69 · 9 Rue François Mitterrand, 63300 Thiers",
   titleLine1: "SUPER",
   titleLine2: "FAST FOOD",
-  tagline: "Tacos · Naan · Burgers · Paninis · Gratine",
+  tagline: "Tacos · Naan · Burgers · Paninis · Tacos avec Gratine",
   chocolateText: "Livraison à domicile dès 40€",
   ctaText: "Voir le Menu",
   heroImage: "images/kebab_naan.jpg",
@@ -157,7 +157,7 @@ export const exploreConfig: ExploreConfig = {
       id: "gratine",
       x: 75,
       y: 25,
-      title: "Gratine",
+      title: "Tacos avec Gratine",
       description: "Gratine Simple – €8,00 | Gratine Double – €9,50 | Gratine Triple – €11,50 | Options : Mozzarella, Raclette, Cheddar, Chèvre Miel, Boursin",
       iconType: "treepine",
       image: "images/gratine.jpg"
@@ -266,8 +266,8 @@ export const tastingConfig: TastingConfig = {
     },
     {
       iconType: "eye",
-      title: "Gratine",
-      description: "Frites gratinées avec fromage",
+      title: "Tacos avec Gratine",
+      description: "Tacos avec Gratine",
       notes: [
         "Gratine Simple – €8,00",
         "Gratine Double – €9,50",
