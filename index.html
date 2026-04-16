@@ -1,145 +1,18 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-<style>
-  :root {
-    --brand-primary: #FF4B2B; /* Fast food red-orange */
-    --brand-secondary: #FFB400; /* Mustard yellow */
-    --bg-warm: #FDF8F1;
-    --text-dark: #2D241E;
-    --text-muted: #6B5E51;
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg-warm);
-    color: var(--text-dark);
-    line-height: 1.6;
-  }
-
-  #support {
-    padding: 80px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: radial-gradient(circle at top right, #fff5e6 0%, var(--bg-warm) 100%);
-  }
-
-  .support-header {
-    max-width: 600px;
-    margin-bottom: 40px;
-    text-align: center;
-  }
-
-  .support-header h2 {
-    font-size: clamp(2rem, 5vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 12px;
-    color: var(--text-dark);
-  }
-
-  .support-header p {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-  }
-
-  /* Badge styling */
-  .online-status {
-    display: inline-flex;
-    align-items: center;
-    background: #e8f5e9;
-    color: #2e7d32;
-    padding: 6px 12px;
-    border-radius: 100px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-  }
-
-  .status-dot {
-    height: 8px;
-    width: 8px;
-    background-color: #4CAF50;
-    border-radius: 50%;
-    margin-right: 8px;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(76, 175, 80, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-  }
-
-  .chat-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 450px;
-    perspective: 1000px;
-  }
-
-  .chat-container {
-    background: white;
-    border-radius: 32px;
-    overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(0,0,0,0.05);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-
-  .chat-container:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 35px 60px -15px rgba(255, 75, 43, 0.1);
-  }
-
-  .chat-header-bar {
-    background: var(--brand-primary);
-    padding: 15px 25px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  iframe {
-    width: 100%;
-    height: 550px;
-    border: none;
-    display: block;
-  }
-
-  @media (max-width: 480px) {
-    #support { padding: 40px 15px; }
-    iframe { height: 500px; }
-  }
-</style>
-
-<section id="support">
-  <div class="support-header">
-    <div class="online-status">
-      <span class="status-dot"></span> Agent disponible
-    </div>
-    <h2>Faim d'une réponse ? 🍔</h2>
-    <p>Notre assistant virtuel vous aide à suivre votre commande ou à choisir votre prochain festin en quelques secondes.</p>
-  </div>
-
-  <div class="chat-wrapper">
-    <div class="chat-container">
-      <div class="chat-header-bar">
-        <span style="font-weight: 600;"><i class="fas fa-robot"></i> Super Bot</span>
-        <i class="fas fa-ellipsis-h"></i>
-      </div>
-      
-      <iframe
-        src="super-fast-food-chatbot.html"
-        title="Support Client Super Fast Food"
-      ></iframe>
-    </div>
-  </div>
-</section>
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Super Fast Food</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+      /* Keep your global styles if you still need them */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: 'Inter', sans-serif; background: #f5f0e8; color: #1a1208; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
