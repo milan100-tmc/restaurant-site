@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Fast Food — Support Client</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #D32F2F;
+    --red-light: #FFEBEE;
+    --red-dark: #B71C1C;
+    --amber: #F57C00;
+    --amber-light: #FFF3E0;
+    --yellow: #FFD600;
+    --bg: #F5F0E8;
+    --surface: #FFFFFF;
+    --text: #1A1208;
+    --text-muted: #7A6E5F;
+    --border: rgba(0,0,0,0.08);
+    --bot-bubble: #FFFFFF;
+    --user-bubble: #D32F2F;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --radius: 18px;
+    --radius-sm: 10px;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1rem;
+  }
+
+  .chat-wrapper {
+    width: 100%;
+    max-width: 440px;
+    height: 680px;
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border-radius: 24px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.14);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* HEADER */
+  .chat-header {
+    background: var(--red);
+    padding: 18px 20px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .chat-header::before {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: -30px;
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .chat-header::after {
+    content: '';
+    position: absolute;
+    right: 30px;
+    bottom: -40px;
+    width: 90px;
+    height: 90px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  .avatar {
+    width: 46px;
+    height: 46px;
+    background: var(--yellow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--red-dark);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .header-info { position: relative; z-index: 1; }
+  .header-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+  .header-status {
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 2px;
+  }
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    background: #69F0AE;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* MESSAGES AREA */
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+  }
+  .messages::-webkit-scrollbar { width: 4px; }
+  .messages::-webkit-scrollbar-track { background: transparent; }
+  .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* BUBBLES */
+  .msg-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    animation: fadeUp 0.28s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .msg-row.bot { justify-content: flex-start; }
+  .msg-row.user { justify-content: flex-end; }
+
+  .mini-avatar {
+    width: 28px;
+    height: 28px;
+    background: var(--yellow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    color: var(--red-dark);
+    flex-shrink: 0;
+  }
+
+  .bubble {
+    max-width: 78%;
+    padding: 11px 15px;
+    border-radius: var(--radius);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .bot .bubble {
+    background: var(--bot-bubble);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+    box-shadow: var(--shadow);
+  }
+  .user .bubble {
+    background: var(--user-bubble);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+
+  .bubble b { font-weight: 600; }
+  .bubble .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    margin-top: 4px;
+  }
+  .bubble .info-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .bubble a { color: var(--red); text-decoration: underline; font-size: 13px; }
+
+  /* QUICK REPLIES */
+  .quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 0 16px 12px;
+  }
+  .qr-btn {
+    background: var(--red-light);
+    color: var(--red-dark);
+    border: 1px solid rgba(211,47,47,0.2);
+    border-radius: 20px;
+    padding: 7px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.12s;
+    white-space: nowrap;
+  }
+  .qr-btn:hover { background: #FFCDD2; transform: translateY(-1px); }
+  .qr-btn:active { transform: scale(0.97); }
+
+  /* TYPING INDICATOR */
+  .typing-row { display: flex; align-items: flex-end; gap: 8px; }
+  .typing-bubble {
+    background: var(--bot-bubble);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .dot { width: 7px; height: 7px; background: #C0B8A8; border-radius: 50%; animation: blink 1.2s infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  /* INPUT AREA */
+  .input-area {
+    flex-shrink: 0;
+    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: var(--surface);
+  }
+  .input-area input {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 10px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-area input::placeholder { color: var(--text-muted); }
+  .input-area input:focus { border-color: var(--red); background: #fff; }
+  .send-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--red);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.12s;
+    flex-shrink: 0;
+  }
+  .send-btn:hover { background: var(--red-dark); }
+  .send-btn:active { transform: scale(0.95); }
+  .send-btn svg { width: 18px; height: 18px; fill: #fff; }
+
+  /* DIVIDER */
+  .day-label {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin: 4px 0;
+  }
+
+  /* BRAND STRIP */
+  .brand-strip {
+    text-align: center;
+    padding: 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg);
+    flex-shrink: 0;
+  }
+  .brand-strip span { color: var(--red); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="chat-wrapper">
+  <div class="chat-header">
+    <div class="avatar">SFF</div>
+    <div class="header-info">
+      <div class="header-name">Super Fast Food</div>
+      <div class="header-status"><span class="status-dot"></span>En ligne — Thiers 63300</div>
+    </div>
+  </div>
+
+  <div class="messages" id="messages">
+    <div class="day-label">Aujourd'hui</div>
+  </div>
+
+  <div class="quick-replies" id="quickReplies"></div>
+
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Posez votre question..." autocomplete="off" />
+    <button class="send-btn" id="sendBtn">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+
+  <div class="brand-strip">Support client <span>Super Fast Food</span> — Thiers</div>
+</div>
+
+<script>
+const KB = {
+  adresse: {
+    keywords: ['adresse','où','situé','trouver','localisation','plan','maps','gps','chemin','route','aller'],
+    answer: `<b>📍 Adresse</b><br>9 Rue François Mitterrand<br>63300 Thiers<br><br>Nous sommes en plein centre-ville de Thiers, à deux pas du Chaudron et de la Rue Conchette.`
+  },
+  horaires: {
+    keywords: ['horaire','ouvert','fermé','heure','ouvre','ferme','quand','midi','soir','matin','dimanche','samedi','lundi','weekend'],
+    answer: `<b>🕐 Horaires d'ouverture</b><br><br>Lun – Ven : 11h00 – 22h00<br>Samedi : 11h30 – 22h30<br>Dimanche : 12h00 – 21h00<br><br>Nous sommes ouverts tous les jours de la semaine !`
+  },
+  menu: {
+    keywords: ['menu','carte','manger','burger','sandwich','frites','kebab','plat','repas','boisson','dessert','offre','produit'],
+    answer: `<b>🍔 Notre carte</b><br><br>Burgers maison (classic, fromage, épicé…)<br>Sandwichs & wraps<br>Frites, potatoes & onion rings<br>Salades fraîches<br>Boissons (sodas, jus, milkshakes)<br>Desserts & sundaes<br><br>La carte complète est disponible sur place !`
+  },
+  prix: {
+    keywords: ['prix','combien','tarif','coût','cher','euro','formule','menu enfant'],
+    answer: `<b>💶 Nos tarifs</b><br><br>Burger seul : à partir de 4,50 €<br>Menu (burger + frites + boisson) : à partir de 8,90 €<br>Menu enfant : 6,50 €<br>Formule midi (semaine) : 7,90 €<br><br>Tous nos prix incluent la TVA.`
+  },
+  livraison: {
+    keywords: ['livraison','livrer','domicile','commande','emporter','uber','deliveroo','deliver'],
+    answer: `<b>🛵 Commandes & livraison</b><br><br>✅ Sur place (restaurant)<br>✅ À emporter (commande au comptoir)<br><br>Nous ne proposons pas encore la livraison à domicile pour le moment. Passez nous voir directement !`
+  },
+  paiement: {
+    keywords: ['paiement','payer','carte','espèce','cash','cb','ticket','chèque','déjeuner','payez','acceptez'],
+    answer: `<b>💳 Modes de paiement</b><br><br>✅ Espèces<br>✅ Carte bancaire (CB, Visa, Mastercard)<br>✅ Tickets restaurant<br>✅ Sans contact (NFC)<br><br>Nous n'acceptons pas les chèques.`
+  },
+  allergie: {
+    keywords: ['allergie','allergène','gluten','lactose','halal','végétarien','vegan','intolérance','sans'],
+    answer: `<b>🌿 Allergènes & régimes spéciaux</b><br><br>Nous pouvons adapter certaines préparations. Signalez vos allergies à notre équipe au moment de votre commande.<br><br>Nos produits peuvent contenir des traces de gluten, lactose, fruits à coque et graines de sésame.`
+  },
+  telephone: {
+    keywords: ['téléphone','appeler','numéro','contact','joindre','tel'],
+    answer: `<b>📞 Nous contacter</b><br><br>Vous pouvez nous joindre directement au restaurant :<br><b>9 Rue François Mitterrand, 63300 Thiers</b><br><br>Notre équipe sera ravie de répondre à vos questions sur place ou par visite.`
+  },
+  parking: {
+    keywords: ['parking','garer','voiture','stationnement','stationner'],
+    answer: `<b>🅿️ Stationnement</b><br><br>Des places de stationnement sont disponibles dans les rues environnantes du centre-ville de Thiers. Nous vous recommandons le parking de la Mairie à quelques minutes à pied.`
+  }
+};
+
+const QUICK_REPLIES = [
+  { label: '📍 Adresse', key: 'adresse' },
+  { label: '🕐 Horaires', key: 'horaires' },
+  { label: '🍔 Menu', key: 'menu' },
+  { label: '💶 Prix', key: 'prix' },
+  { label: '🛵 Livraison', key: 'livraison' },
+  { label: '💳 Paiement', key: 'paiement' },
+  { label: '🌿 Allergènes', key: 'allergie' },
+  { label: '📞 Contact', key: 'telephone' },
+];
+
+const FALLBACK = `Je ne suis pas sûr(e) de comprendre votre question 😊<br><br>Vous pouvez me demander des informations sur nos <b>horaires</b>, notre <b>adresse</b>, notre <b>menu</b>, nos <b>prix</b>, la <b>livraison</b> ou les <b>paiements</b>.<br><br>Ou bien venez nous voir directement au <b>9 Rue François Mitterrand, Thiers</b> !`;
+
+const GREET = `Bonjour ! 👋 Bienvenue chez <b>Super Fast Food</b> à Thiers.<br><br>Je suis votre assistant virtuel. Comment puis-je vous aider aujourd'hui ?`;
+
+const messagesEl = document.getElementById('messages');
+const inputEl = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+const qrEl = document.getElementById('quickReplies');
+
+function scrollDown() {
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function addBotMessage(html) {
+  const row = document.createElement('div');
+  row.className = 'msg-row bot';
+  row.innerHTML = `
+    <div class="mini-avatar">SFF</div>
+    <div class="bubble">${html}</div>`;
+  messagesEl.appendChild(row);
+  scrollDown();
+}
+
+function addUserMessage(text) {
+  const row = document.createElement('div');
+  row.className = 'msg-row user';
+  row.innerHTML = `<div class="bubble">${escHtml(text)}</div>`;
+  messagesEl.appendChild(row);
+  scrollDown();
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function showTyping() {
+  const row = document.createElement('div');
+  row.className = 'typing-row';
+  row.id = 'typing';
+  row.innerHTML = `
+    <div class="mini-avatar">SFF</div>
+    <div class="typing-bubble">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>`;
+  messagesEl.appendChild(row);
+  scrollDown();
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing');
+  if (el) el.remove();
+}
+
+function findAnswer(text) {
+  const lower = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  for (const [key, data] of Object.entries(KB)) {
+    for (const kw of data.keywords) {
+      const kwNorm = kw.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      if (lower.includes(kwNorm)) return data.answer;
+    }
+  }
+  return null;
+}
+
+function renderQuickReplies() {
+  qrEl.innerHTML = '';
+  QUICK_REPLIES.forEach(qr => {
+    const btn = document.createElement('button');
+    btn.className = 'qr-btn';
+    btn.textContent = qr.label;
+    btn.onclick = () => handleQuery(qr.label.replace(/^[^\s]+ /, ''), KB[qr.key].answer);
+    qrEl.appendChild(btn);
+  });
+}
+
+function handleQuery(userText, forcedAnswer) {
+  addUserMessage(userText);
+  showTyping();
+  const answer = forcedAnswer || findAnswer(userText) || FALLBACK;
+  setTimeout(() => {
+    removeTyping();
+    addBotMessage(answer);
+    renderQuickReplies();
+  }, 650 + Math.random() * 400);
+}
+
+function onSend() {
+  const text = inputEl.value.trim();
+  if (!text) return;
+  inputEl.value = '';
+  qrEl.innerHTML = '';
+  handleQuery(text, null);
+}
+
+sendBtn.addEventListener('click', onSend);
+inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') onSend(); });
+
+// Init
+setTimeout(() => {
+  addBotMessage(GREET);
+  renderQuickReplies();
+}, 350);
+</script>
+</body>
+</html>
