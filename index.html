@@ -6,22 +6,35 @@
     <title>Super Fast Food</title>
   </head>
   <body>
-<section id="support" style="padding: 60px 20px; background: #F5F0E8; text-align: center;">
-  <h2 style="font-family: sans-serif; font-size: 22px; margin-bottom: 8px; color: #1A1208;">
-    Une question ? On répond !
-  </h2>
-  <p style="font-family: sans-serif; color: #7A6E5F; margin-bottom: 24px; font-size: 15px;">
-    Notre assistant est disponible 24h/24
-  </p>
-  <iframe
-    src="super-fast-food-chatbot.html"
-    width="440"
-    height="680"
-    style="border: none; border-radius: 24px; box-shadow: 0 8px 40px rgba(0,0,0,0.14); max-width: 100%;"
-    title="Support Client Super Fast Food"
-  ></iframe>
-</section>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+  <div id="root"></div>
+
+  <div class="chatbot">
+    <iframe src="super-fast-food-chatbot.html"></iframe>
+  </div>
+
+  <script type="module" src="/src/main.tsx"></script>
+
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .chatbot {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 350px;
+      height: 500px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      z-index: 999;
+    }
+
+    .chatbot iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</body>
